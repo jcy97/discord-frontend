@@ -5,11 +5,13 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Typography,
 } from "@mui/material";
 import CustomPrimaryButton from "../../shared/components/CustomPrimaryButton";
+import { connect } from "react-redux";
+import { getActions } from "../../store/actions/frinedsActions";
+
 const AddFriendDialog = ({
   isDialogOpen,
   closeDialogHandler,
@@ -20,6 +22,12 @@ const AddFriendDialog = ({
 
   const handleSendInvitation = () => {
     // 친구 추가 요청
+    sendFriendInvitation(
+      {
+        targetMailAddress: mail,
+      },
+      handleCloseDialog
+    );
   };
 
   const handleCloseDialog = () => {
@@ -38,9 +46,9 @@ const AddFriendDialog = ({
           <Typography>친구 초대</Typography>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <Typography>초대할 친구의 이메일을 입력하세요</Typography>
-          </DialogContentText>
+          <Typography variant="body1">
+            초대할 친구의 이메일을 입력하세요
+          </Typography>
           <InputWithLabel
             label="이메일"
             type="text"
@@ -65,4 +73,10 @@ const AddFriendDialog = ({
     </div>
   );
 };
-export default AddFriendDialog;
+
+const mapActionToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+export default connect(null, mapActionToProps)(AddFriendDialog);

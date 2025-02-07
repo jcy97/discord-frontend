@@ -7,7 +7,7 @@ export const createNewRoom = () => {
   socketConnection.createNewRoom();
 };
 
-export const newRoomCreated = () => {
+export const newRoomCreated = (data) => {
   const [roomDetails] = data;
   store.dispatch(setRoomDetails(roomDetails));
 };

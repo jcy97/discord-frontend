@@ -13,7 +13,6 @@ const initState = {
 };
 
 const reducer = (state = initState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case roomActions.OPEN_ROOM:
       return {
@@ -25,6 +24,21 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         roomDetails: action.roomDetails,
+      };
+    case roomActions.SET_ACTIVE_ROOMS:
+      return {
+        ...state,
+        activeRooms: action.activeRooms,
+      };
+    case roomActions.SET_LOCAL_STREAM:
+      return {
+        ...state,
+        localStream: action.localStream,
+      };
+    case roomActions.SET_AUDIO_ONLY:
+      return {
+        ...state,
+        audioOnly: action.audioOnly,
       };
     default:
       return state;

@@ -6,8 +6,8 @@ import {
 } from "../store/actions/frinedsActions";
 import store from "../store/store";
 import { updateDirectChatHistoryIfActive } from "../shared/utils/chat";
-import { setOpenRoom } from "../store/actions/roomActions";
 import * as roomHandler from "./roomHandler";
+import * as webRTCHandler from "./webRTCHandler";
 
 let socket = null;
 
@@ -47,6 +47,16 @@ export const connectWithSocketServer = (userDetails) => {
   socket.on("room-create", (data) => {
     roomHandler.newRoomCreated(data);
   });
+
+  socket.on("active-rooms", (data) => {
+    roomHandler.updateActiveRooms(data);
+  });
+
+  //webRTC 연결 사전 준비 데이터를 받아서 처리하는 부분
+  socket.on("conn-prepare", (data) => {
+    const { connUserSocketId } = data;
+    webRTCHandler.prepareNewPeerConnection(data);
+  });
 };
 
 export const sendDirectMessage = (data) => {
@@ -60,4 +70,12 @@ export const getDirectChatHistory = (data) => {
 
 export const createNewRoom = () => {
   socket.emit("room-create");
+};
+
+export const joinRoom = (data) => {
+  socket.emit("room-join", data);
+};
+
+export const leaveRoom = (data) => {
+  socket.emit("room-leave", data);
 };

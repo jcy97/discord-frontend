@@ -55,12 +55,28 @@ export const connectWithSocketServer = (userDetails) => {
   //webRTC 연결 사전 준비 데이터를 받아서 처리하는 부분
   socket.on("conn-prepare", (data) => {
     const { connUserSocketId } = data;
-    webRTCHandler.prepareNewPeerConnection(data);
+    webRTCHandler.prepareNewPeerConnection(connUserSocketId, false);
+    // 연결 초기화 작업 수행
+    socket.emit("conn-init", {
+      connUserSocketId: connUserSocketId,
+    });
+  });
+
+  socket.on("conn-init", (data) => {
+    const { connUserSocketId } = data;
+    webRTCHandler.prepareNewPeerConnection(connUserSocketId, true);
+  });
+
+  socket.on("conn-signal", (data) => {
+    webRTCHandler.handleSignalingData(data);
+  });
+  socket.on("room-participant-left", (data) => {
+    console.log("사용자가 방을 떠났습니다.");
+    webRTCHandler.handleParticipantLeftRoom(data);
   });
 };
 
 export const sendDirectMessage = (data) => {
-  console.log(data);
   socket.emit("direct-message", data);
 };
 
@@ -78,4 +94,8 @@ export const joinRoom = (data) => {
 
 export const leaveRoom = (data) => {
   socket.emit("room-leave", data);
+};
+
+export const signalPeerData = (data) => {
+  socket.emit("conn-signal", data);
 };

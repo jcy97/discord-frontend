@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
 import MessagesHeader from "./MessagesHeader";
 import { connect } from "react-redux";
-import DUMMTY_MESSAGES from "./DUMMY_MEESAGES";
+
 import Message from "./Message";
 import DateSeparator from "./DateSeparator";
 const MainContainer = styled("div")({

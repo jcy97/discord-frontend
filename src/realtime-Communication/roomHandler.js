@@ -3,6 +3,7 @@ import {
   setRoomDetails,
   setActiveRooms,
   setLocalStream,
+  setRemoteStreams,
 } from "../store/actions/roomActions";
 import store from "../store/store";
 import * as socketConnection from "./socketConnection";
@@ -59,6 +60,11 @@ export const leaveRoom = () => {
     localStream.getTracks().forEach((track) => track.stop());
     store.dispatch(setLocalStream(null));
   }
+  store.dispatch(setRemoteStreams([]));
+
+  // 원격 스트림 연결 끊기
+  webRTCHandler.closeAllConnections();
+
   socketConnection.leaveRoom({ roomId });
   store.dispatch(setRoomDetails(null));
   store.dispatch(setOpenRoom(false, false));

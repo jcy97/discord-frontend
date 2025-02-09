@@ -40,6 +40,17 @@ const reducer = (state = initState, action) => {
         ...state,
         audioOnly: action.audioOnly,
       };
+    case roomActions.SET_REMOTE_STREAMS:
+      return {
+        ...state,
+        remoteStreams: action.remoteStreams,
+      };
+    case roomActions.SET_SCREEN_SHARE_STREAM:
+      return {
+        ...state,
+        screenSharingStream: action.screenSharingStream,
+        isScreenSharingActive: action.isScreenSharingActive,
+      };
     default:
       return state;
   }
